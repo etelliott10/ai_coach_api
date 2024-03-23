@@ -1,31 +1,58 @@
+# Import statements (assuming other imports are correct)
 from fast_whisper import whisper
 from audio import create_audio_file
 from open_ai import open_ai_conversation
 from eleven_labs import text_to_voice
-# from labs import labs_text_to_voice
-# Main function for running the chat in a loop until user exits
-if __name__ == "__main__":
-    while True:
-        # Prompt the user for input
-        user_choice = input("Do you want to start recording? (yes/no/quit): ").lower().strip()
+
+# Main function for running the chat in a loop until the user exits
+while True:
+    # Prompt the user for input
+    user_choice = input("Do you want to start recording? (yes/no/quit): ").lower().strip()    
+
+    # Check if the user wants to quit
+    if user_choice == "quit":
+        print("Exiting the chat.")
+        break  # Exit the loop and end the program
         
-        # Check if the user wants to quit
-        if user_choice == "quit":
-            print("Exiting the chat.")
-            break  # Exit the loop and end the program
-        
-        # Check if the user wants to start recording
-        elif user_choice == "yes":
+    # Check if the user wants to start recording
+    elif user_choice == "yes":
+        # Attempt to handle exceptions gracefully
+        try:
             audio_file_name = create_audio_file()
             text_user_input = whisper(audio_file_name)
             response = open_ai_conversation(text_user_input)
-            # print("Chatbot: ", response)
             text_to_voice(response)
-            # labs_text_to_voice(response)
+        except Exception as e:
+            print("An error occurred:", e)
+            # Add specific error handling or cleanup code if needed
             
-        # If user inputs anything other than "yes", prompt again
-        else:
-            print("Invalid choice. Please enter 'yes', 'no', or 'quit'.")
+    # If user inputs anything other than "yes", prompt again
+    else:
+        print("Invalid choice. Please enter 'yes', 'no', or 'quit'.")
+
+# if __name__ == "__main__":
+#     while continue_running:
+#         # Prompt the user for input
+#         user_choice = input("Do you want to start recording? (yes/no/quit): ").lower().strip()
+        
+#         # Check if the user wants to quit
+#         if user_choice == "quit":
+#             print("Exiting the chat.")
+#             continue_running = False
+#             break  # Exit the loop and end the program
+        
+#         # Check if the user wants to start recording
+#         elif user_choice == "yes":
+#             audio_file_name = create_audio_file()
+#             text_user_input = whisper(audio_file_name)
+#             response = open_ai_conversation(text_user_input)
+#             # print("Chatbot: ", response)
+#             text_to_voice(response)
+#             # labs_text_to_voice(response)
+            
+#         # If user inputs anything other than "yes", prompt again
+#         else:
+#             print("Invalid choice. Please enter 'yes', 'no', or 'quit'.")
 
 
 
