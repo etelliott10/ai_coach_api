@@ -6,6 +6,8 @@ from eleven_labs import text_to_voice  # Importing text_to_voice from the eleven
 import pyaudio  # Library for audio I/O
 import wave  # Library for reading and writing WAV files
 import os  # Library for interacting with the operating system
+from record_conversation import get_messages, log_conversation
+
 from dotenv import load_dotenv  # Loading environment variables from .env files
 
 # Load variables from the .env file
@@ -66,18 +68,31 @@ def open_ai_conversation(user_input):
     # Set your OpenAI API key
     OpenAI.api_key = OPENAI_API_KEY
     
+    judge = "You are a judge for grading public speaker's elevator pitch. You give them positive and negative feedback. Look for words that need to be changed. give a suggestion on what the user should say."
+    stay_home_mother = "You are a stay home mother. Giving positive and negative feedback about the user's product and if other stay at home mothers would like it. Look for words that need to be changed. give a suggestion on what the user should say."
+    sassy_woman = "You are a sassy woman who is a ceo for their clothing company. She specializes in making stylish clothing. Giving positive and negative feedback about the user's product and if the user's product is something she wants. Look for words that need to be changed. give a suggestion on what the user should say."
+    
+    ai_role = judge
+    # ai_role = stay_home_mother
+    # ai_role = sassy_woman
+    
+    # ai_role = "You are a judge for grading public speaker's elevator pitch. You give them positive and negative feedback. Look for words that need to be changed. give a suggestion on what the user should say."
+    # ai_role = "You are a stay home mother. Giving positive and negative feedback about the user's product and if other stay at home mothers would like it. Look for words that need to be changed. give a suggestion on what the user should say."
+    # ai_role = "You are a sassy woman who is a ceo for their clothing company. She specializes in making stylish clothing. Giving positive and negative feedback about the user's product and if the user's product is something she wants. Look for words that need to be changed. give a suggestion on what the user should say."
+    
+    
     client = OpenAI()
     # Generate completion using OpenAI Chat API
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a judge for grading public speaker's elevator pitch. You give them positive and negative feedback. Look for words that need to be changed. give a suggestion on what the user should say."},
+            {"role": "system", "content": ai_role},
             {"role": "user", "content": user_input}
         ]
     )
     content = completion.choices[0].message.content  # Get generated response
-    print(content)  # Print generated response
-    return content  # Return generated response
+    print(content)  
+    return content  
 
 if __name__ == "__main__":
     while True:
@@ -92,9 +107,10 @@ if __name__ == "__main__":
         elif user_choice == "yes":
             audio_file_name = create_audio_file()  # Record audio and get filename
             text_user_input = whisper(audio_file_name)  # Transcribe audio
-            response = open_ai_conversation(text_user_input)  # Generate response
-            text_to_voice(response)  # Speak response
-            
+            ai_response = open_ai_conversation(text_user_input)  # Generate response
+            text_to_voice(ai_response)  # Speak response
+            log_conversation('user', text_user_input)
+            log_conversation('ai', ai_response )
             # Perform further actions with the response if needed
         else:
             print("Invalid choice. Please enter 'yes', 'no', or 'quit'.")

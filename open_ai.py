@@ -58,7 +58,6 @@ def open_ai_conversation(user_input):
     - The model's response as a string, providing feedback and suggestions.
     """
     # Set your OpenAI API key
-    # OpenAI.api_key = settings.OPENAI_API_KEY
     OpenAI.api_key = OPENAI_API_KEY
     
 
@@ -67,8 +66,6 @@ def open_ai_conversation(user_input):
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a judge for grading public speaker's elevator pitch. You give them positive and negative feedback. Look for words that need to be changed. give a suggestion on what the user should say."},
-            
-            # {"role": "system", "content": "You are a homeowner named Emily, who hears a knock at the door. you open up the door and see the person at the door looks like a salesman."},
             {"role": "user", "content": user_input}
         ]
     )
@@ -80,11 +77,7 @@ def open_ai_conversation(user_input):
 
 # Get the OpenAI API key from the environment variables
 def open_ai_conversation_ex () :
-    # openai_api_key works
-    # print(settings.OPENAI_API_KEY) 
-    
     # Set your OpenAI API key
-    # OpenAI.api_key = settings.OPENAI_API_KEY
     OpenAI.api_key = OPENAI_API_KEY
 
     client = OpenAI()

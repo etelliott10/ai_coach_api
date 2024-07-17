@@ -11,8 +11,9 @@ load_dotenv()
 ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
 
 client = ElevenLabs(
-  api_key=ELEVEN_LABS_API_KEY, # Defaults to ELEVEN_API_KEY
+  api_key=ELEVEN_LABS_API_KEY, 
 )
+
 # Define the API endpoint
 url = "https://api.elevenlabs.io/v1/text-to-speech/FjgI3kfCCF7asWkUpSJ3"
 
@@ -38,9 +39,9 @@ response = requests.post(url, json=data, headers=headers)
 
 # Check if the request was successful
 if response.status_code == 200:
-    # Play the audio (assuming the response content is the audio data)
+    # Plays the audio 
     audio_data = response.content
     play(audio_data)
-    # You need to handle the audio data appropriately based on your platform and audio library
+   
 else:
     print("Failed to generate audio:", response.text)

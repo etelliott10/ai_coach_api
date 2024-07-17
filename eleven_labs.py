@@ -1,4 +1,4 @@
-from elevenlabs import play
+from elevenlabs import Voice, VoiceSettings, play
 from elevenlabs.client import ElevenLabs
 import requests
 from dotenv import load_dotenv
@@ -23,32 +23,21 @@ headers = {
     "xi-api-key": ELEVEN_LABS_API_KEY  # Replace with your Eleven Labs API key
 }
 
-# # Define the data (text to convert to speech)
-# data = {
-#     "text": "hello there, how can i help you?",
-#     "model_id": "eleven_monolingual_v1",
-#     "voice_settings": {
-#         "stability": 0.5,
-#         "similarity_boost": 0.5
-#     }
-# }
-
-# # Make the POST request to generate audio
-# response = requests.post(url, json=data, headers=headers)
-
-# # Check if the request was successful
-# if response.status_code == 200:
-#     # Play the audio (assuming the response content is the audio data)
-#     audio_data = response.content
-#     play(audio_data)
-#     # You need to handle the audio data appropriately based on your platform and audio library
-# else:
-    # print("Failed to generate audio:", response.text)
+# Alex
+# voice_id = 'FjgI3kfCCF7asWkUpSJ3'
+# Natalie
+# voice_id = 'ngvnNeEwGzQ3hAEheUbD'
+# Momma Sasha
+voice_id = 'KMPlsPuVrgLVDgEQrRJK'
 
 def text_to_voice(ai_text):
     # Define the data (text to convert to speech)
     data = {
         "text": ai_text,
+        # "voice": Voice(
+        #     voice_id='EXAVITQu4vr4xnSDxMaL',
+        #     settings=VoiceSettings(stability=0.71, similarity_boost=0.5, style=0.0, use_speaker_boost=True)
+        # ),
         "model_id": "eleven_monolingual_v1",
         "voice_settings": {
             "stability": 0.5,
@@ -56,14 +45,13 @@ def text_to_voice(ai_text):
         }
     }
 
-# Make the POST request to generate audio
+    # Make the POST request to generate audio
     response = requests.post(url, json=data, headers=headers)
 
-# Check if the request was successful
+    # Check if the request was successful
     if response.status_code == 200:
-    # Play the audio (assuming the response content is the audio data)
+        # Plays the audio 
         audio_data = response.content
         play(audio_data)
-    # You need to handle the audio data appropriately based on your platform and audio library
     else:
         print("Failed to generate audio:", response.text)
